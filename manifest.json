@@ -1,0 +1,26 @@
+{
+  "author": "igorlogius",
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "browser_action": {
+      "default_title": "Copy total load time of all tabs"
+  },
+  "page_action": {
+  },
+  "icons": {
+      "128": "icon.png"
+  },
+  "description": "display pages total load time and lets you copy it or from all open tabs",
+  "manifest_version": 2,
+  "name": "total-load-time",
+  "permissions": [
+    "tabs",
+    "webNavigation",
+    "clipboardWrite",
+    "notifications"
+  ],
+  "version": "1.0.0"
+}
