@@ -104,7 +104,7 @@ function getIconImageData(rank) {
     const ctx = canvas.getContext('2d');
     const addText = function(ctx, text, centerX, centerY) {
         // yellow fill
-        ctx.fillStyle = '#ff6';
+        ctx.fillStyle = getHexColorStringForNumber(rank);// '#ff6';
         ctx.fillRect(0, 0, imageWidth, imageHeight);
 
         // text / number
@@ -119,6 +119,18 @@ function getIconImageData(rank) {
     const text = rank !== null ? shortTextForNumber(rank) : "n/a";
     addText(ctx, text, imageWidth / 2, imageHeight / 2 + textOffset)
     return ctx.getImageData(0, 0, imageWidth, imageHeight);
+}
+
+function getHexColorStringForNumber(number){
+	if (number < 1000) {
+        return "green"; // green
+	} else if (number < 2500) {
+		return "yellow"; // yellow
+	} else if (number < 5000) {
+		return "orange"; // orange
+	} else {
+		return "red"; // red
+	}
 }
 
 function shortTextForNumber (number) {
