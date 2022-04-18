@@ -79,10 +79,19 @@ filter = {
     url: [{schemes: ["http", "https"]}]
 };
 
+
+function onRemoved(tabId){
+    if(typeof tabLoadTimes[tabId] !== 'undefined') {
+        tabLoadTimes[tabId] = undefined;
+        delete tabLoadTimes[tabId];
+    }
+}
+
 browser.webNavigation.onBeforeNavigate.addListener(onBefore, filter);
 browser.webNavigation.onCompleted.addListener(onCompleted, filter);
 browser.pageAction.onClicked.addListener(onPAClicked);
 browser.browserAction.onClicked.addListener(onBAClicked);
+browser.tabs.onRemoved.addListener(onRemoved);
 
 
 function getIconImageData(rank) {
