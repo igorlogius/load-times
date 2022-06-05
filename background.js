@@ -7,7 +7,7 @@ async function onBAClicked(tab) {
         const tabs = await browser.tabs.query({status:'complete', currentWindow: true, url: ['http://*/*','https://*/*']});
         let text = '';
         for(const tab of tabs){
-            text = text + "idx:" + tab.index + ", url:" + tab.url + ", loadtime" + tabLoadTimes[tab.id] + "ms\n";
+            text = text + "idx: " + tab.index + ", url: " + tab.url + ", loadtime: " + tabLoadTimes[tab.id] + "ms\n";
         }
 
         const loadTime = tabLoadTimes[tab.id];
@@ -39,7 +39,7 @@ async function onPAClicked(tab) {
         const msg = 'Copied load time of active tab';
 
 
-        let text = "idx:" + tab.index + ", url:" + tab.url + ", loadtime:" + loadTime +"ms\n";
+        let text = "idx: " + tab.index + ", url: " + tab.url + ", loadtime: " + loadTime + "ms\n";
         await navigator.clipboard.writeText(text);
 
         const nID = await browser.notifications.create(""+tab.id, // <= "download id" is "notification id"
