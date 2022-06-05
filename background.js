@@ -89,6 +89,7 @@ function onRemoved(tabId){
 
 browser.webNavigation.onBeforeNavigate.addListener(onBefore, filter);
 browser.webNavigation.onCompleted.addListener(onCompleted, filter);
+browser.webNavigation.onErrorOccurred.addListener(onCompleted); // also calc the time for navigation errors
 browser.pageAction.onClicked.addListener(onPAClicked);
 browser.browserAction.onClicked.addListener(onBAClicked);
 browser.tabs.onRemoved.addListener(onRemoved);
