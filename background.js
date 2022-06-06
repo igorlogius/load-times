@@ -1,5 +1,7 @@
 /*global browser */
 
+const browserStartTimestamp = Date.now();
+
 const filter = {
     url: [{schemes: ["http", "https"]}]
 };
@@ -71,7 +73,7 @@ async function onMessage(data /*, sender*/) {
                         return {
                                 index: t.index
                             ,     url: t.url
-                            ,loadtime: ( ( tabLoadTimes[t.id] && (tabLoadTimes[t.id] > 0) ) ? tabLoadTimes[t.id] : 0 )
+                            ,loadtime: ( ( tabLoadTimes[t.id] && (tabLoadTimes[t.id] > 0) && (tabLoadTimes[t.id] < browserStartTimestamp) ) ? tabLoadTimes[t.id] : 'n/a' )
                         };
                 });
           return Promise.resolve(tabsdata);

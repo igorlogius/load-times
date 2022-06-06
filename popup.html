@@ -3,25 +3,18 @@
 <head>
 	<meta charset="utf-8"></meta>
   	<title></title>
+    <link href="popup.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-	<center>
-	<form id="mainForm" accept-charset="utf-8" style="width:100%;">
-		<!-- input type="submit" value="Save All Changes" /-->
-		<!--input id="impbtn_wrapper" type="button" name="impbtn" value="Import" />
-		<input id="impbtn" type="file" name="impbtn" value="" style="display:none;" />
-		<input id="expbtn" type="button" name="impbtn" value="Export" /-->
-		<table id="mainTable" border=1 style="width:100%;" >
+		<table id="mainTable" border=1 style="width:100%;display:none;" >
 			<thead>
-				<th>Index</th>
-				<th>URL</th>
-				<th>Load Time (<abbr title="milliseconds">ms</abbr></th>
+				<th><abbr title="Tab Index/Position/Offset">Idx</abbr></th>
+				<th><abbr title="unified resource locator">URL</abbr></th>
+				<th>Load Time (<abbr title="milliseconds">ms</abbr>)</th>
 			</thead>
 			<tbody id='mainTableBody' />
 		</table>
-			<div>
-	</form>
-	</center>
+        <div id="message"></div>
   <script src="popup.js"></script>
 </body>
 </html>
