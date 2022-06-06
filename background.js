@@ -1,3 +1,4 @@
+/*global browser */
 
 const filter = {
     url: [{schemes: ["http", "https"]}]
@@ -10,7 +11,7 @@ let tabLoadTimes = {};
 function getIconImageData(rank) {
     const imageWidth = 42;
     const imageHeight = 42;
-    const markerSize = 8;
+    //const markerSize = 8;
     const font = "bold 18pt 'Arial'";
     const color = "#000000";
     const canvas = document.createElement('canvas');
@@ -63,7 +64,7 @@ function shortTextForNumber (number) {
 
 // callback functions
 
-async function onMessage(data, sender) {
+async function onMessage(data /*, sender*/) {
     if(data.currentWindow === true){
           const tabsdata = (await browser.tabs.query(data))
                 .map( (t) => {
