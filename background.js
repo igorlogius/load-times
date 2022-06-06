@@ -70,10 +70,11 @@ async function onMessage(data /*, sender*/) {
     if(data.currentWindow === true){
           const tabsdata = (await browser.tabs.query(data))
                 .map( (t) => {
+                        const loadTime = tabLoadTimes[t.id];
                         return {
                                 index: t.index
                             ,     url: t.url
-                            ,loadtime: ( ( tabLoadTimes[t.id] && (tabLoadTimes[t.id] > 0) && (tabLoadTimes[t.id] < browserStartTimestamp) ) ? tabLoadTimes[t.id] : 'n/a' )
+                            ,loadtime: ( ( loadTime  && (loadTime > 0) && (loadTime < browserStartTimestamp) ) ? loadTime : 'n/a' )
                         };
                 });
           return Promise.resolve(tabsdata);
@@ -89,17 +90,21 @@ function onBefore(details){
 
 function onCompleted(details){
     if (details.frameId === 0){ // is top-level frame
+
         tabLoadTimes[details.tabId] = details.timeStamp - tabLoadTimes[details.tabId];
         const loadTime = tabLoadTimes[details.tabId];
-        browser.pageAction.setIcon({
+
+        if( loadTime  && (loadTime > 0) && (loadTime < browserStartTimestamp) ){
+            browser.pageAction.setIcon({
+                     tabId: details.tabId
+                ,imageData: getIconImageData(loadTime)
+            });
+            browser.pageAction.setTitle({
                  tabId: details.tabId
-            ,imageData: getIconImageData(loadTime)
-        });
-        browser.pageAction.setTitle({
-             tabId: details.tabId
-            ,title: 'Load Time: ' + loadTime + " ms"
-        });
-        browser.pageAction.show(details.tabId);
+                ,title: 'Load Time: ' + loadTime + " ms"
+            });
+            browser.pageAction.show(details.tabId);
+        }
     }
 }
 
