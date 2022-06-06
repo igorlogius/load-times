@@ -6,21 +6,22 @@
     ]
   },
   "browser_action": {
-      "default_title": "Copy total load time of all tabs"
+    "default_title": "Show the intial load times of tabs/pages/sites",
+    "default_popup": "popup.html"
   },
   "page_action": {
+     "default_popup": "popup.html?activeTab=1"
   },
   "icons": {
-      "128": "icon.png"
+    "128": "icon.png"
   },
-  "description": "display pages total load time and lets you copy it or from all open tabs",
+  "description": "Show the inital load times of tabs/pages/sites",
   "manifest_version": 2,
-  "name": "total-load-time",
+  "name": "Load Times",
   "permissions": [
+    "menus", 
     "tabs",
-    "webNavigation",
-    "clipboardWrite",
-    "notifications"
+    "webNavigation"
   ],
-  "version": "1.2.1"
+  "version": "1.4.1"
 }

@@ -1,99 +1,11 @@
 
-let tabLoadTimes = {};
-
-
-async function onBAClicked(tab) {
-
-        const tabs = await browser.tabs.query({status:'complete', currentWindow: true, url: ['http://*/*','https://*/*']});
-        let text = '';
-        for(const tab of tabs){
-            text = text + "idx: " + tab.index + ", url: " + tab.url + ", loadtime: " + tabLoadTimes[tab.id] + "ms\n";
-        }
-
-        const loadTime = tabLoadTimes[tab.id];
-
-        const title = 'Total Load Time';
-        const msg = 'Copied load times of all tabs';
-
-
-        await navigator.clipboard.writeText(text);
-
-        const nID = await browser.notifications.create(""+tab.id, // <= "download id" is "notification id"
-            {
-                "type": "basic"
-                ,"iconUrl": browser.runtime.getURL("icon.png")
-                ,"title": title
-                ,"message": msg
-                //,"buttons": buttons, // <= not availabe in firefox yet
-            });
-
-        setTimeout(() => {
-            browser.notifications.clear(nID);
-        },6000);
-}
-
-async function onPAClicked(tab) {
-        const loadTime = tabLoadTimes[tab.id];
-
-        const title = 'Total Load Time';
-        const msg = 'Copied load time of active tab';
-
-
-        let text = "idx: " + tab.index + ", url: " + tab.url + ", loadtime: " + loadTime + "ms\n";
-        await navigator.clipboard.writeText(text);
-
-        const nID = await browser.notifications.create(""+tab.id, // <= "download id" is "notification id"
-            {
-                "type": "basic"
-                ,"iconUrl": browser.runtime.getURL("icon.png")
-                ,"title": title
-                ,"message": msg
-                //,"buttons": buttons, // <= not availabe in firefox yet
-            });
-
-        setTimeout(() => {
-            browser.notifications.clear(nID);
-        },6000);
-}
-
-function onBefore(details){
-    if (details.frameId === 0){ // is top-level frame
-        tabLoadTimes[details.tabId] = details.timeStamp;
-    }
-}
-
-function onCompleted(details){
-    if (details.frameId === 0){ // is top-level frame
-        tabLoadTimes[details.tabId] = details.timeStamp - tabLoadTimes[details.tabId];
-        const loadTime = tabLoadTimes[details.tabId];
-        browser.pageAction.setIcon({
-            'imageData': getIconImageData(loadTime)
-            ,'tabId': details.tabId
-        });
-        browser.pageAction.setTitle({title: 'Total Load Time: ' + loadTime + " ms", tabId: details.tabId });
-        browser.pageAction.show(details.tabId);
-    }
-}
-
-filter = {
+const filter = {
     url: [{schemes: ["http", "https"]}]
 };
 
+let tabLoadTimes = {};
 
-function onRemoved(tabId){
-    if(typeof tabLoadTimes[tabId] !== 'undefined') {
-        tabLoadTimes[tabId] = undefined;
-        delete tabLoadTimes[tabId];
-    }
-}
-
-browser.webNavigation.onBeforeNavigate.addListener(onBefore, filter);
-browser.webNavigation.onCompleted.addListener(onCompleted, filter);
-browser.webNavigation.onErrorOccurred.addListener(onCompleted); // also calc the time for navigation errors
-browser.pageAction.onClicked.addListener(onPAClicked);
-browser.browserAction.onClicked.addListener(onBAClicked);
-browser.tabs.onRemoved.addListener(onRemoved);
-
+// helper functions
 
 function getIconImageData(rank) {
     const imageWidth = 42;
@@ -149,4 +61,57 @@ function shortTextForNumber (number) {
 	}
 }
 
+// callback functions
+
+async function onMessage(data, sender) {
+    if(data.currentWindow === true){
+          const tabsdata = (await browser.tabs.query(data))
+                .map( (t) => {
+                        return {
+                                index: t.index
+                            ,     url: t.url
+                            ,loadtime: ( ( tabLoadTimes[t.id] && (tabLoadTimes[t.id] > 0) ) ? tabLoadTimes[t.id] : 0 )
+                        };
+                });
+          return Promise.resolve(tabsdata);
+    }
+    return false;
+}
+
+function onBefore(details){
+    if (details.frameId === 0){ // is top-level frame
+        tabLoadTimes[details.tabId] = details.timeStamp;
+    }
+}
+
+function onCompleted(details){
+    if (details.frameId === 0){ // is top-level frame
+        tabLoadTimes[details.tabId] = details.timeStamp - tabLoadTimes[details.tabId];
+        const loadTime = tabLoadTimes[details.tabId];
+        browser.pageAction.setIcon({
+                 tabId: details.tabId
+            ,imageData: getIconImageData(loadTime)
+        });
+        browser.pageAction.setTitle({
+             tabId: details.tabId
+            ,title: 'Load Time: ' + loadTime + " ms"
+        });
+        browser.pageAction.show(details.tabId);
+    }
+}
+
+function onRemoved(tabId){
+    if(typeof tabLoadTimes[tabId] !== 'undefined') {
+        tabLoadTimes[tabId] = undefined;
+        delete tabLoadTimes[tabId];
+    }
+}
+
+// register callback functions
+
+browser.runtime.onMessage.addListener(onMessage);
+browser.tabs.onRemoved.addListener(onRemoved);
+browser.webNavigation.onBeforeNavigate.addListener(onBefore, filter);
+browser.webNavigation.onCompleted.addListener(onCompleted, filter);
+browser.webNavigation.onErrorOccurred.addListener(onCompleted); // also calc the time for navigation errors
 
