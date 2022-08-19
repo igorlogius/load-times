@@ -1,3 +1,4 @@
+/* global browser */
 
 function createTableRow(tab) {
 	var mainTableBody = document.getElementById('mainTableBody');
@@ -9,7 +10,6 @@ function createTableRow(tab) {
 }
 
 async function restoreOptions() {
-	var mainTableBody = document.getElementById('mainTableBody');
 	var mainTable = document.getElementById('mainTable');
 	var message = document.getElementById('message');
 
@@ -23,9 +23,9 @@ async function restoreOptions() {
     }
     if(values.length > 0){
         mainTable.style.display = 'block';
-	    values.forEach( (item) => {
-		    createTableRow(item);
-	    });
+        values.forEach( (item) => {
+            createTableRow(item);
+        });
         return;
     }
     message.innerText = "No tabs with measureable load Times found";
