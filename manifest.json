@@ -15,7 +15,6 @@
   "icons": {
     "128": "icon.png"
   },
-  "description": "Show the inital load times of tabs/pages/sites",
   "manifest_version": 2,
   "name": "Load Times",
   "permissions": [
@@ -23,5 +22,5 @@
     "tabs",
     "webNavigation"
   ],
-  "version": "1.4.4"
+  "version": "1.4.5"
 }
