@@ -1,6 +1,7 @@
-Display load times of one or all tabs also contains a color indicator to easily detect slow loading pages
+Display load times of one or all tabs with a color indicator to quickly detect slow loading pages.
 
-This addon uses the browsers built-in timestamps provided by the 2 event callbacks onBeforeNavigation and onCompleted. This allows to calculate the total load time without having any interaction with the webpage itself.
+This addon uses the browsers built-in timestamps provided by the 2 event callbacks onBeforeNavigation and onCompleted.
+This allows to calculate the total load time without having any interaction with the webpage itself.
 
 <b>Usage:</b>
 <ol>
