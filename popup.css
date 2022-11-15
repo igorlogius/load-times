@@ -2,3 +2,9 @@
 body {
     background: lightgray;
 }
+
+tr:hover{
+	background-color:lightblue;
+	cursor: pointer;
+}
+

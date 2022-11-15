@@ -7,6 +7,9 @@ function createTableRow(tab) {
 	tr.insertCell().innerText = tab.index;
 	tr.insertCell().innerText = tab.url;
 	tr.insertCell().innerText = tab.loadtime;
+	tr.addEventListener('click', (evt) => {
+		browser.tabs.highlight({tabs: [tab.index]});
+	});
 }
 
 async function restoreOptions() {
