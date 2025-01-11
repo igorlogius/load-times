@@ -6,7 +6,7 @@ Display load times of tabs with a color indicator to quickly detect slow loading
 
 <b>Short Demo Video:</b>
 
-tbd.
+[demo-2025-01-11_17.14.41.webm](https://github.com/user-attachments/assets/efb38514-8efd-47ef-8ea4-8c07e614af85)
 
 <b>Usage:</b>
 <ol>
