@@ -1,6 +1,4 @@
-Display load times of one or all tabs with a color indicator to quickly detect slow loading pages.
-This addon uses the browsers built-in timestamps provided by the 2 event callbacks onBeforeNavigation and onCompleted.
-This allows to calculate the total load time without having any interaction with the webpage itself.
+Display load times of tabs with a color indicator to quickly detect slow loading pages. ses the browsers built-in timestamps to calculate the total load time without having any interaction with the webpage itself.
 
 [![](https://raw.githubusercontent.com/igorlogius/igorlogius/main/geFxAddon.png)](https://addons.mozilla.org/en-US/firefox/addon/load-times/)
 
